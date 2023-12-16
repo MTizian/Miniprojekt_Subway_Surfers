@@ -24,5 +24,6 @@ void	printMap(position coloredPixels[][SCREEN_WIDTH]);
 void	setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position train, int len_x, int len_y, color farbe);
 void	setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position player, color farbe);
 int		checkCollision(position train_1, position train_2, position train_3, position player);
+int		randomNumber(int max, int min);
 
 #endif

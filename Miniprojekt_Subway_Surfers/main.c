@@ -1,9 +1,22 @@
+//////////////////////////////////////////
+//										//
+//		Subway Surfers Miniprojekt		//
+//										//
+//		Nico Häfle			311063		//
+//		Tizian Müller		310315		//
+//										// 
+//		Das Programm ist Open Source	//
+//										//
+//////////////////////////////////////////
+
+
 #include "ColorPalette.h"
 #include "gameFunctions.h"
 #include <conio.h>
 #include <stdio.h>
 #include <windows.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 
 
@@ -48,25 +61,91 @@ int main() {
 
 
 
+	int duration = 400;
+
+	position train_map[200][SCREEN_WIDTH];
+
+	int randNumber, 
+		randMax = 200, 
+		randMin = 25;
+
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 
 	//	Startmenü Fehlt
-	//	!!Zufallsgeneration für Züge fehlt!!
+	//	Algorithmus für die Platzierung der Züge fehlt noch
 	//	Highscore Fehlt
-	//	 Endmenü Fehlt
+	//	Endmenü Fehlt
+	// 
+	//	Flackern im terminal wegbekommen
 	// 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+	//Gedanke für zufallszüge
+		//Vorgaben:	-max. 2 züge auf drei bahnen
+		//
+		// Erst Züge in Train_map setzen dann train_map auf game_map übertragen
+		// 
+		// Zufällige höhe für die platzierung von train auf y-achse
+		// 
+		//  evtl. array von zügen erstellen ... evtl. damit auch highscore berechnung möglich damit möglich
+		//
+
+
+	train_1.y = randomNumber(randMax, randMin);
+	train_2.y = randomNumber(randMax, randMin + TRAIN_LENGTH_Y);
+	train_3.y = randomNumber(randMax, randMin);
+
+
+
+
+
+	//Spielschleife
 	while (user_input != '\x1B') {
 		system("cls");
 
 		setGameField(game_map);
 
-		//Züge PLatzieren
-		setTrain(game_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, grey);
-		setTrain(game_map, train_2, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, grey);
-		setTrain(game_map, train_3, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, grey);
+
+
+
+
+
+
+
+
+
+		
+
+		
+
+
+		//setTrain(train_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, red);
+
+
+
+
+
+
+
+
+		//Züge PLatzieren in der game map
+		setTrain(game_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, black);
+		setTrain(game_map, train_2, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, black);
+		setTrain(game_map, train_3, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, black);
 
 
 		//Spieler Platzieren
@@ -106,13 +185,21 @@ int main() {
 
 
 
-		//Bewege Zug nach unten
+		//Bewege Zug nach oben
 		train_1.y--;
 		train_2.y--;
 		train_3.y--;
 
+
+
+
 		//Warte in mSd
-		Sleep(100);
+		Sleep(duration);
+
+		if (duration != 10) {
+			//Wiederholungen der schleife wird bei jeder weiderholung um eine mS schneller bis sie bei 10mS ist
+			duration--;
+		}
 	}
 
 	return 0;

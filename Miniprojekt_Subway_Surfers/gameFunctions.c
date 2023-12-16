@@ -1,6 +1,8 @@
 #include <conio.h>
 #include <stdio.h>
 #include <windows.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "ColorPalette.h"
 #include "gameFunctions.h"
@@ -37,7 +39,7 @@ void setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	{
 		for (int j = 0; j < SCREEN_WIDTH; j++)
 		{
-			feld[i][j].farbe = black;
+			feld[i][j].farbe = dark_green;
 		}
 	}
 
@@ -130,4 +132,12 @@ int checkCollision(position train_1, position train_2, position train_3, positio
 	if (collisionMap[player.y][player.x] == 1) {
 		return 1; 
 	}
+}
+
+
+int randomNumber(int max, int min) {
+	//Initialisierung ZUfallsgenerator
+	srand(time(NULL));
+
+	return rand() % max + min;
 }
