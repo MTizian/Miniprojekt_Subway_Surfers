@@ -15,5 +15,6 @@ extern  color   green;
 extern  color   cyan;
 extern  color   blue;
 extern  color   dark_green;
+extern  color   yellow;
 
 #endif

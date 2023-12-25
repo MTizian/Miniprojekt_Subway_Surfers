@@ -8,3 +8,4 @@ color green = { 0,255,0 };
 color cyan = { 0,255,255 };
 color blue = { 0,0,255 };
 color dark_green = { 0, 113, 0 };
+color yellow = { 255,255,0 };
