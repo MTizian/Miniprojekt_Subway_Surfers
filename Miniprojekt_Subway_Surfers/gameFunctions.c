@@ -1,8 +1,9 @@
 #include <conio.h>
 #include <stdio.h>
-#include <windows.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
+#include <windows.h>
 
 #include "ColorPalette.h"
 #include "gameFunctions.h"
@@ -72,7 +73,7 @@ void printMap(position feld[][SCREEN_WIDTH]) {
 
 			
 		}
-		printf("\n");
+		printf("\r");
 	}
 	printf("\x1b[0m");  // Setzt die Farben zurück
 }
@@ -91,8 +92,6 @@ void setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position train, int le
 		}
 	}
 }
-
-
 
 void setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position player, color farbe) {
 	feld[player.y][player.x].farbe = farbe;
@@ -148,86 +147,82 @@ void printScoreboard(int score, int coins) {
 }
 
 void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
-	position block_1, block_2;
+	position block_1, block_2, header_block;
+	char startText[] = "Start [y]";
+	char quitText[] = "Quit [n]";
+	char headerText[] = "Subway Surfers";
+	
 	block_1.x = 7;
 	block_2.x = 33;
 	block_1.y = block_2.y = 17;
-	block_1.farbe = block_2.farbe = grey;
+	block_1.farbe = block_2.farbe = header_block.farbe = grey;
 
-	
+	header_block.x = 7; header_block.y = 4;
 
-	int block_length = 15;
-	const char startText[] = "Start [s]";
-	const char quitText[] = "Quit [q]";
 
 	//Erstellung vom Spielfeld mit Weißer fläche
-	for (int i = 0; i < SCREEN_HEIGHT; i++)
-	{
-		for (int j = 0; j < SCREEN_WIDTH; j++)
-		{
-			feld[i][j].farbe = dark_green;
+	for (int i = 0; i < SCREEN_HEIGHT; i++){
+		for (int j = 0; j < SCREEN_WIDTH; j++){
+			feld[i][j].farbe = white;
 			feld[i][j].symbol = ' ';
 		}
 	}
 
-
-
-
-	//Block 1
-	for (int j = 0; j < block_length; j++)
-	{
-		feld[block_1.y][j + block_1.x].farbe = block_1.farbe;
-	}
-
-	feld[block_1.y + 1][block_1.x].farbe = block_1.farbe;
-	for (int j = 0; j < block_length - 2; j++)
-	{
-		feld[block_1.y + 1][j + block_1.x + 1].farbe = block_1.farbe;
-	}
-	feld[block_1.y + 1][block_length - 1 + block_1.x].farbe = block_1.farbe;
+	//Header Block Überschrift
 
 	//Text setzen
-	for (int n = 0; n <9; n++) {  // -1, um das Nullzeichen am Ende zu ignorieren
-		feld[block_1.y + 1][block_1.x + n + 3].symbol = startText[n];
+	for (int n = 0; n < strlen(headerText); n++) {
+		feld[header_block.y + 1][header_block.x + n + 1].symbol = headerText[n];
+	}
+	//Fareb setzen
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y + 1][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++){
+		feld[header_block.y + 2][j + header_block.x].farbe = header_block.farbe;
 	}
 
 
-	for (int j = 0; j < block_length; j++)
-	{
+	//Block mit Start
+
+	//Text setzen
+	for (int n = 0; n < strlen(startText); n++) {
+		feld[block_1.y + 1][block_1.x + n + 1].symbol = startText[n];
+	}
+	//Farbe setzen
+	for (int j = 0; j < strlen(startText) + 2; j++) {
+		feld[block_1.y][j + block_1.x].farbe = block_1.farbe;
+	}
+	for (int j = 0; j < strlen(startText) + 2; j++) {
+		feld[block_1.y + 1][j + block_1.x].farbe = block_1.farbe;
+	}
+	for (int j = 0; j < strlen(startText) + 2; j++) {
 		feld[block_1.y + 2][j + block_1.x].farbe = block_1.farbe;
 	}
 
 
-
-	//Block 2
-	for (int j = 0; j < block_length; j++)
-	{
-		feld[block_2.y][j + block_2.x].farbe = block_2.farbe;
-	}
-
-	feld[block_2.y + 1][block_2.x].farbe = block_2.farbe;
-	for (int j = 0; j < block_length - 2; j++)
-	{
-		feld[block_2.y + 1][j + block_2.x + 1].farbe = block_2.farbe;
-	}
-	feld[block_2.y + 1][block_length - 1 + block_2.x].farbe = block_2.farbe;
+	//Block mit quit
 
 	//Text setzen
-	for (int n = 0; n < 8; n++) {  // -1, um das Nullzeichen am Ende zu ignorieren
-		feld[block_2.y + 1][block_2.x + n + 3].symbol = quitText[n];
+	for (int n = 0; n < strlen(quitText); n++) {
+		feld[block_2.y + 1][block_2.x + n + 1].symbol = quitText[n];
 	}
-
-
-	for (int j = 0; j < block_length; j++)
-	{
+	//Fareb setzen
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
+		feld[block_2.y][j + block_2.x].farbe = block_2.farbe;
+	}
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
+		feld[block_2.y + 1][j + block_2.x].farbe = block_2.farbe;
+	}
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
 		feld[block_2.y + 2][j + block_2.x].farbe = block_2.farbe;
 	}
-
-
 }
 
-
-void mainGame() {
+int mainGame() {
 	int score = 0;
 	int coins = 0;
 	char user_input = ' ';
@@ -235,24 +230,16 @@ void mainGame() {
 	position player;
 	player.x = 27,
 	player.y = 3;
-
-
 	position train_1;
 	train_1.x = 3;
-
 	position train_2;
 	train_2.x = 21;
-
 	position train_3;
 	train_3.x = 39;
-
 	position game_map[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-
 	int randNumber,
 		randMax = 100,
 		randMin = 25;
-
 	//Für die zunehmende Geschwindigkeit
 	int duration = 400;
 
@@ -260,7 +247,6 @@ void mainGame() {
 	train_1.y = randomNumber(randMax, randMin);
 	train_2.y = randomNumber(randMax, randMin)+25;
 	train_3.y = randomNumber(randMax, randMin) + 50;
-
 
 
 	//Spielschleife
@@ -272,31 +258,20 @@ void mainGame() {
 		setGameField(game_map);
 
 
-
-
-		//setTrain(train_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, red);
-
-
 		//Züge PLatzieren in der game map
 		setTrain(game_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, cyan);
 		setTrain(game_map, train_2, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, cyan);
 		setTrain(game_map, train_3, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, black);
 
-
 		//Spieler Platzieren
 		setPlayer(game_map, player, red);
 
 
-		
 		if (checkCollision(train_1, train_2, train_3, player) == 1) {
 			printf("Collision detected! Game Over\n");
-			sleep(1000);
+			Sleep(1000);
 			break;
 		}
-		
-
-		//BUG!! Erkennt colliosion auch wenn kein zug auf der bahn!!
-
 
 		//Spieler Eingabe
 		if (_kbhit()) {
@@ -318,19 +293,15 @@ void mainGame() {
 			}
 		}
 
+		score++;
 
 		//Ausgabe des Feldes
 		printMap(game_map);
-
-
 
 		//Bewege Zug nach oben
 		train_1.y--;
 		train_2.y--;
 		train_3.y--;
-
-		score++;
-
 
 		//Warte in mSd
 		Sleep(duration);
@@ -340,30 +311,55 @@ void mainGame() {
 			duration--;
 		}
 	}
+	return score;
 }
 
 
-void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
-	position block_1, block_2;
+void loadingAnimation() {
+	system("cls");
+	printf("Loading\n");
+
+	//Loading animation
+	printf("|");
+	for (int i = 0; i < 25; i++) {
+		Sleep(50);
+		printPixel(blue);
+	}
+	printf("|");
+	system("cls");
+}
+
+void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int score) {
+	position block_1, block_2, header_block;
 	block_1.x = 7;
 	block_2.x = 33;
 	block_1.y = block_2.y = 17;
-	block_1.farbe = block_2.farbe = grey;
+	block_1.farbe = block_2.farbe = header_block.farbe  = grey;
+
+	header_block.x = 7; header_block.y = 4;
 
 
 
-	int block_length = 15;
-	const char startText[] = "Start [s]";
-	const char quitText[] = "Quit [q]";
+	const char	againText[] = "Again [y]";
+	const char	quitText[] = "Quit [n]";
+	const char	headerText[] = "Subway Surfers"; 
+	char		scoreText[30] = "Your Score ";
+	char		scoreitoc[20]; // Score Buffer
 
 
+	sprintf_s(scoreText, sizeof(scoreText), "Your Score: %d", score);
+	strcat_s(scoreText, sizeof(scoreText), " ");
+
+
+
+	system("cls");
 
 	//Erstellung vom Spielfeld mit Weißer fläche
 	for (int i = 0; i < SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < SCREEN_WIDTH; j++)
 		{
-			feld[i][j].farbe = dark_green;
+			feld[i][j].farbe = white;
 			feld[i][j].symbol = ' ';
 		}
 	}
@@ -371,55 +367,67 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 
 
 
-	//Block 1
-	for (int j = 0; j < block_length; j++)
-	{
-		feld[block_1.y][j + block_1.x].farbe = block_1.farbe;
-	}
-
-	feld[block_1.y + 1][block_1.x].farbe = block_1.farbe;
-	for (int j = 0; j < block_length - 2; j++)
-	{
-		feld[block_1.y + 1][j + block_1.x + 1].farbe = block_1.farbe;
-	}
-	feld[block_1.y + 1][block_length - 1 + block_1.x].farbe = block_1.farbe;
+	//Header Block Überschrift
 
 	//Text setzen
-	for (int n = 0; n < 9; n++) {  // -1, um das Nullzeichen am Ende zu ignorieren
-		feld[block_1.y + 1][block_1.x + n + 3].symbol = startText[n];
+	for (int n = 0; n < strlen(headerText); n++) {
+		feld[header_block.y + 1][header_block.x + n + 1].symbol = headerText[n];
+	}
+	//Score setzen
+	for (int n = 0; n < strlen(scoreText); n++) {
+		feld[header_block.y + 3][header_block.x + n + 1].symbol = scoreText[n];
+	}
+
+	//Fareb setzen
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y + 1][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y + 2][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y + 3][j + header_block.x].farbe = header_block.farbe;
+	}
+	for (int j = 0; j < strlen(headerText) + 2; j++) {
+		feld[header_block.y + 4][j + header_block.x].farbe = header_block.farbe;
 	}
 
 
-	for (int j = 0; j < block_length; j++)
-	{
+	//Block mit Start
+
+	//Text setzen
+	for (int n = 0; n < strlen(againText); n++) {
+		feld[block_1.y + 1][block_1.x + n + 1].symbol = againText[n];
+	}
+	//Farbe setzen
+	for (int j = 0; j < strlen(againText) + 2; j++) {
+		feld[block_1.y][j + block_1.x].farbe = block_1.farbe;
+	}
+	for (int j = 0; j < strlen(againText) + 2; j++) {
+		feld[block_1.y + 1][j + block_1.x].farbe = block_1.farbe;
+	}
+	for (int j = 0; j < strlen(againText) + 2; j++) {
 		feld[block_1.y + 2][j + block_1.x].farbe = block_1.farbe;
 	}
 
 
-
-	//Block 2
-	for (int j = 0; j < block_length; j++)
-	{
-		feld[block_2.y][j + block_2.x].farbe = block_2.farbe;
-	}
-
-	feld[block_2.y + 1][block_2.x].farbe = block_2.farbe;
-	for (int j = 0; j < block_length - 2; j++)
-	{
-		feld[block_2.y + 1][j + block_2.x + 1].farbe = block_2.farbe;
-	}
-	feld[block_2.y + 1][block_length - 1 + block_2.x].farbe = block_2.farbe;
+	//Block mit quit
 
 	//Text setzen
-	for (int n = 0; n < 8; n++) {  // -1, um das Nullzeichen am Ende zu ignorieren
-		feld[block_2.y + 1][block_2.x + n + 3].symbol = quitText[n];
+	for (int n = 0; n < strlen(quitText); n++) {
+		feld[block_2.y + 1][block_2.x + n + 1].symbol = quitText[n];
 	}
-
-
-	for (int j = 0; j < block_length; j++)
-	{
+	//Fareb setzen
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
+		feld[block_2.y][j + block_2.x].farbe = block_2.farbe;
+	}
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
+		feld[block_2.y + 1][j + block_2.x].farbe = block_2.farbe;
+	}
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
 		feld[block_2.y + 2][j + block_2.x].farbe = block_2.farbe;
 	}
-
-
 }

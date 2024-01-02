@@ -28,8 +28,7 @@ int		checkCollision(position train_1, position train_2, position train_3, positi
 int		randomNumber(int max, int min);
 void	printScoreboard(int score, int coins);
 void	setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]);
-
-void	mainGame();
-void	setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]);
-
+int		mainGame();
+void	loadingAnimation();
+void	setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int score);
 #endif
