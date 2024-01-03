@@ -1,6 +1,7 @@
 #ifndef COLORPALETTE_H
 #define COLORPALETTE_H
 
+//erstelle datentyp 
 typedef struct {
     int r, 
         g, 
@@ -16,5 +17,6 @@ extern  color   cyan;
 extern  color   blue;
 extern  color   dark_green;
 extern  color   yellow;
+extern  color   dark_gray;
 
 #endif

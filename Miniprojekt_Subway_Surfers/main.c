@@ -20,16 +20,9 @@
 
 #define SCREEN_HEIGHT		25
 #define SCREEN_WIDTH		55
-#define STEP_SIZE			18
-#define TRAIN_LENGTH_X		13
-#define TRAIN_LENGTH_Y		10
-#define LINE1				0
-#define LINE2				18
-#define LINE3				36
-#define LINE4				54
+
 
 int main() {
-	setbuf(stdout, NULL);
 	char user_input = ' ';
 	bool exit = FALSE;
 	int score = 0;
@@ -41,31 +34,27 @@ int main() {
 
 	do {
 		//Spieler Eingabe
-		if (_kbhit()) {
+		if (_kbhit()) { //Überprüft auf Tasten Eingabe 
+			fflush(stdin);
 			user_input = _getch();
 			switch (user_input) {
-			case 'n':
-				printf("Danke fuers spielen\n");
-				exit = TRUE;
-				fflush(stdin);
-				break;
-			case 'y':
-				loadingAnimation();
-				score = mainGame();
-				setEndMenu(menu_map, score);
-				printMap(menu_map);
-				exit = FALSE;
-				fflush(stdin);
-				break;
-			default:
-				break;
+				//wenn n oder ESC gedrückt
+				case 'n': case '\x1B':
+					printf("Danke fuers spielen\n");
+					exit = TRUE;
+					break;
+				case 'y':
+					loadingAnimation();
+					score = mainGame();
+					setEndMenu(menu_map, score);
+					printMap(menu_map);
+					exit = FALSE;
+					break;
+				default:
+					break;
 			}
 		}
-	} while (exit != TRUE);
-
-
-	
-	
+	} while (exit != TRUE);	
 	 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 

@@ -10,13 +10,7 @@ typedef struct {
 
 #define SCREEN_HEIGHT		25
 #define SCREEN_WIDTH		55
-#define STEP_SIZE			18
-#define TRAIN_LENGTH_X		13
-#define TRAIN_LENGTH_Y		10
-#define LINE1				0
-#define LINE2				18
-#define LINE3				36
-#define LINE4				54
+
 
 void	printPixel(color farbe);
 void	setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]);
@@ -31,4 +25,5 @@ void	setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]);
 int		mainGame();
 void	loadingAnimation();
 void	setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int score);
+
 #endif
