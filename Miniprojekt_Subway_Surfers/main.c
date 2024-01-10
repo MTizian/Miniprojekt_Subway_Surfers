@@ -2,24 +2,23 @@
 //										//
 //		Subway Surfers Miniprojekt		//
 //										//
-//		Nico H�fle			311063		//
+//		Nico H�fele			311063		//
 //		Tizian M�ller		310315		//
 //										// 
 //		Das Programm ist Open Source	//
 //										//
 //////////////////////////////////////////
 
+#include "constants.h"
 #include "ColorPalette.h"
 #include "gameFunctions.h"
+
 #include <conio.h>
 #include <stdio.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-
-#define SCREEN_HEIGHT		25
-#define SCREEN_WIDTH		55
 
 
 int main() {
@@ -39,7 +38,7 @@ int main() {
 			user_input = _getch();
 			switch (user_input) {
 				//wenn n oder ESC gedrückt
-				case 'n': case '\x1B':
+				case 'n': case ESC_KEY:
 					printf("Danke fuers spielen\n");
 					exit = TRUE;
 					break;

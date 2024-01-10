@@ -6,40 +6,14 @@
 #include <windows.h>
 
 #include "ColorPalette.h"
+#include "constants.h"
 #include "gameFunctions.h"
-
-
-#define SCREEN_HEIGHT		25
-#define SCREEN_WIDTH		55
-#define STEP_SIZE			18
-#define TRAIN_LENGTH_X		13
-#define TRAIN_LENGTH_Y		10
-#define LINE1				0
-#define LINE2				18
-#define LINE3				36
-#define LINE4				54
-#define PFEIL_TASTE_LINKS	75
-#define	PFEIL_TASTE_RECHTS	77
-
-//Spielfarben
-#define	LOADING_COLOR			blue
-#define	GAME_MAP_COLOR			dark_green
-#define LINE_COLOR				white
-#define	PLAYER_COLOR			black
-#define	TRAIN_COLOR				dark_gray
-
-#define	PRIMARY_MENU_COLOR		dark_gray
-#define	SECONDARY_MENU_COLOR	white
 
 
 void printPixel(color farbe) {
 	//Farbige Ausgabe mit Ansi Escape Code
 	printf("\x1b[48;2;%d;%d;%dm\x1b[30m%c\x1b[0m", farbe.r, farbe.g, farbe.b, ' ');
 	printf("\x1b[0m");  // Setzt die Farben zurück
-}
-
-void setPixel(char field[200][55], int x, int y, int r, int g, int b) {
-	field[y][x] = "\x1b[48;2;%d;%d;%dm";
 }
 
 void setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
@@ -55,31 +29,33 @@ void setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 
 	//1.Linie
 	for (int i = 0; i < SCREEN_HEIGHT; i++) {
-		feld[i][LINE1].farbe = LINE_COLOR;
+		feld[i][line_1].farbe = LINE_COLOR;
 	}
 
 	//2.Linie
 	for (int i = 0; i < SCREEN_HEIGHT; i++) {
-		feld[i][LINE2].farbe = LINE_COLOR;
+		feld[i][line_2].farbe = LINE_COLOR;
 	}
 
 	//3.Linie
 	for (int i = 0; i < SCREEN_HEIGHT; i++) {
-		feld[i][LINE3].farbe = LINE_COLOR;
+		feld[i][line_3].farbe = LINE_COLOR;
 	}
 
 	//4. Linie
 	for (int i = 0; i < SCREEN_HEIGHT; i++) {
-		feld[i][LINE4].farbe = LINE_COLOR;
+		feld[i][line_4].farbe = LINE_COLOR;
 	}
 }
 
-void printMap(position feld[][SCREEN_WIDTH]) {
+void printMap(position feld[5 * SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	for (int i = 0; i < SCREEN_HEIGHT; ++i) {
 		for (int j = 0; j < SCREEN_WIDTH; ++j) {
 			//Attribute mithilfe von Ansi Escape Code
-			printf("\x1b[%d;%dH\x1b[48;2;%d;%d;%dm\x1b[30m%c\x1b[0m", feld[i][j].y, feld[i][j].x,
-				feld[i][j].farbe.r, feld[i][j].farbe.g, feld[i][j].farbe.b, feld[i][j].symbol);
+			printf("\x1b[%d;%dH\x1b[48;2;%d;%d;%dm\x1b[30m%c\x1b[0m", 
+				feld[i][j].y, feld[i][j].x,
+				feld[i][j].farbe.r, feld[i][j].farbe.g, feld[i][j].farbe.b, 
+				feld[i][j].symbol);
 		}
 		printf("\n");
 	}
@@ -110,8 +86,8 @@ void setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position player, colo
 	feld[player.y-1][player.x].farbe = farbe;
 }
 
-int checkCollision(position train_1, position train_2, position train_3, position player) {
-	int collisionMap[200][55];
+int checkCollision(position *train_1, position *train_2, position *train_3, position *player) {
+	int collisionMap[5 * SCREEN_HEIGHT][SCREEN_WIDTH];
 
 	//Initalisierung der Collision Map auf 0
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
@@ -121,25 +97,29 @@ int checkCollision(position train_1, position train_2, position train_3, positio
 	}
 
 	//Setze positionen der Züge auf eins
-	for (int i = 0; i < TRAIN_LENGTH_Y; i++){
-		for (int j = 0; j < TRAIN_LENGTH_X; j++){
-			collisionMap[train_1.y + i][train_1.x + j] = 1;
-			collisionMap[train_2.y + i][train_2.x + j] = 1;
-			collisionMap[train_3.y + i][train_3.x + j] = 1;
+	for (int i = 0; i < train_len_y; i++){
+		for (int j = 0; j < train_len_x; j++){
+ 			collisionMap[train_1->y + i][train_1->x + j] = 1;
+			collisionMap[train_2->y + i][train_2->x + j] = 1;
+			collisionMap[train_3->y + i][train_3->x + j] = 1;
 		}
 	}
 
 	//Wenn Kollision gebe eins zurück
-	if (collisionMap[player.y][player.x] == 1) {
+	if (collisionMap[player->y][player->x] == 1) {
 		return 1; 
 	}
+	return 0;
 }
 
-int randomNumber(int max, int min) {
-	//Initialisierung ZUfallsgenerator
+
+void initializeRandom() {
 	srand(time(NULL));
-	//Gebe zufallszahl zurück
-	return rand() % max + min;
+}
+
+int randomNumber() {
+	int randMax = 100, randMin = 25;
+	return rand() % (randMax - randMin + 1) + randMin;
 }
 
 void printScoreboard(int score, int coins) {
@@ -232,29 +212,30 @@ int mainGame() {
 	int iterations = 0;
 	//Startposition des Spielers
 	position player;
-	player.x = 27,
+	player.x = SCREEN_WIDTH / 2,
 	player.y = 3;
+
 	position train_1;
 	train_1.x = 3;
 	position train_2;
-	train_2.x = 21;
+	train_2.x = SCREEN_WIDTH / 3 + 3; //21
 	position train_3;
-	train_3.x = 39;
+	train_3.x = 2 * (SCREEN_WIDTH / 3) + 3; // 39
 	position game_map[SCREEN_HEIGHT][SCREEN_WIDTH];
-	int randNumber,
-		randMax = 100,
-		randMin = 25;
+	
 	//Wartezeit bis zur nächsten spielschleife
 	int duration = 200;
 
+	initializeRandom();
+
 	//////////////// Vorübergehend
-	train_1.y = randomNumber(randMax, randMin);
-	train_2.y = randomNumber(randMax, randMin)+25;
-	train_3.y = randomNumber(randMax, randMin) + 50;
+	train_1.y = 30;//randomNumber();
+	train_2.y = 25;//randomNumber() + 25;
+	train_3.y = 54;//randomNumber() + 50;
 	/////////////
 
 	//Spielschleife
-	while (user_input != '\x1B') {
+	while (user_input != ESC_KEY) {
 		system("cls"); //Bildschirm leeren
 		printScoreboard(score, coins);//Score ausgeben
 		setGameField(game_map);//farben setzen
@@ -262,9 +243,9 @@ int mainGame() {
 
 		//Züge PLatzieren auf der game map
 		//       Zielort   was		Länge x			Länge y			Farbe
-		setTrain(game_map, train_1, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, TRAIN_COLOR);
-		setTrain(game_map, train_2, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, TRAIN_COLOR);
-		setTrain(game_map, train_3, TRAIN_LENGTH_X, TRAIN_LENGTH_Y, TRAIN_COLOR);
+		setTrain(game_map, train_1, train_len_x, train_len_y, TRAIN_COLOR);
+		setTrain(game_map, train_2, train_len_x, train_len_y, TRAIN_COLOR);
+		setTrain(game_map, train_3, train_len_x, train_len_y, TRAIN_COLOR);
 
 		//Spieler Platzieren
 		//		  Zielort	was		Farbe
@@ -272,7 +253,7 @@ int mainGame() {
 
 
 		//Falls Kollision entdeckt gebe game over aus und warte 1s
-		if (checkCollision(train_1, train_2, train_3, player) == 1) {
+		if (checkCollision(&train_1, &train_2, &train_3, &player) == 1) {
 			printf("Collision detected! Game Over\n");
 			Sleep(1000);
 			break;
@@ -286,16 +267,16 @@ int mainGame() {
 			//Übergebe char an user_input
 			user_input = _getch();
 			switch (user_input) {
-			case 'a': case PFEIL_TASTE_LINKS:
+			case 'a': case PFEILTASTE_LINKS:
 				//falls der Spieler nicht ganz Links gehe nach links
 				if (player.x != 9) {
-					player.x = (player.x - STEP_SIZE + SCREEN_WIDTH) % SCREEN_WIDTH;
+					player.x = (player.x - step_size+ SCREEN_WIDTH) % SCREEN_WIDTH;
 				}
 				break;
-			case 'd': case PFEIL_TASTE_RECHTS:
+			case 'd': case PFEILTASTE_RECHTS:
 				//falls der spieler nicht ganz rechts gehe nach rechts
 				if (player.x != 45) {
-					player.x = (player.x + STEP_SIZE) % SCREEN_WIDTH;
+					player.x = (player.x + step_size) % SCREEN_WIDTH;
 				}
 				break;
 			default:
@@ -338,7 +319,7 @@ void loadingAnimation() {
 	//Loading animation
 	printf("|");
 	//Schleife für das erstellen von farbigen Pixeln
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 15; i++) {
 		Sleep(50);
 		printPixel(LOADING_COLOR);
 	}

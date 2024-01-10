@@ -24,12 +24,18 @@
     <ClCompile Include="main.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="constrants.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorPalette.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gameFunctions.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
