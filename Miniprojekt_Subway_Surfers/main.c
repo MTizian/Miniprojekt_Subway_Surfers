@@ -44,8 +44,7 @@ int main() {
 					break;
 				case 'y':
 					loadingAnimation();
-					//score = mainGame();
-					mainGame();
+					score = mainGame();
 					setEndMenu(menu_map, &score);
 					printMap(menu_map);
 					exit = FALSE;

@@ -133,12 +133,12 @@ void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	char quitText[] = "Quit [n]";
 	char headerText[] = "Subway Surfers";
 	
-	block_1.x = 7;
-	block_2.x = 33;
+	block_1.x = SCREEN_WIDTH / 4;	//Position 1. Block
+	block_2.x = 3 * SCREEN_WIDTH / 4 - (strlen(quitText) + 2); //Position vom 2.ten Block
 	block_1.y = block_2.y = 17;
 	block_1.farbe = block_2.farbe = header_block.farbe = SECONDARY_MENU_COLOR;
 
-	header_block.x = 7; header_block.y = 4;
+	header_block.x = SCREEN_WIDTH / 4; header_block.y = 4;
 
 
 	//Erstellung vom Spielfeld mit Weiﬂer fl‰che
@@ -156,13 +156,13 @@ void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 		feld[header_block.y + 1][header_block.x + n + 1].symbol = headerText[n];
 	}
 	//Farbe setzen
-	for (int j = 0; j < strlen(headerText) + 2; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 2; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y + 1][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 2; j++){
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++){
 		feld[header_block.y + 2][j + header_block.x].farbe = header_block.farbe;
 	}
 
@@ -205,7 +205,6 @@ void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 
 int mainGame() {
 	int score = 0;
-	int coins = 0;
 	char user_input = ' ';
 	int iterations = 0;
 	//Startposition des Spielers
@@ -227,9 +226,9 @@ int mainGame() {
 	initializeRandom();
 
 	//////////////// Vor¸bergehend
-	train_1.y = 30;//randomNumber();
-	train_2.y = 25;//randomNumber() + 25;
-	train_3.y = 54;//randomNumber() + 50;
+	train_1.y = randomNumber();
+	train_2.y = randomNumber();
+	train_3.y = randomNumber();
 	/////////////
 
 	//Spielschleife
@@ -267,13 +266,13 @@ int mainGame() {
 			switch (user_input) {
 			case 'a': case PFEILTASTE_LINKS:
 				//falls der Spieler nicht ganz Links gehe nach links
-				if (player.x != 9) {
+				if (player.x != (SCREEN_WIDTH / 6)) {
 					player.x = (player.x - step_size+ SCREEN_WIDTH) % SCREEN_WIDTH;
 				}
 				break;
 			case 'd': case PFEILTASTE_RECHTS:
 				//falls der spieler nicht ganz rechts gehe nach rechts
-				if (player.x != 45) {
+				if (player.x != ((SCREEN_WIDTH / 6) * 5)) {
 					player.x = (player.x + step_size) % SCREEN_WIDTH;
 				}
 				break;
@@ -332,11 +331,12 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int *score) {
 	char		scoreText[30] = "Your Score ";
 
 	position block_1, block_2, header_block;
-	block_1.x = 7;
-	block_2.x = 33;
+	block_1.x = SCREEN_WIDTH / 4;	//Position 1. Block
+	block_2.x = 3 * SCREEN_WIDTH / 4 - (strlen(quitText) + 2); //Position vom 2.ten Block
 	block_1.y = block_2.y = 17;
 	block_1.farbe = block_2.farbe = header_block.farbe = SECONDARY_MENU_COLOR;
-	header_block.x = 7; header_block.y = 4;
+
+	header_block.x = SCREEN_WIDTH / 4; header_block.y = 4;
 
 	
 
@@ -368,19 +368,19 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int *score) {
 		feld[header_block.y + 3][header_block.x + n + 1].symbol = scoreText[n];
 	}
 	//Farbe setzen	(5 Zeilen)
-	for (int j = 0; j < strlen(headerText) + 3; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 3; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y + 1][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 3; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y + 2][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 3; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y + 3][j + header_block.x].farbe = header_block.farbe;
 	}
-	for (int j = 0; j < strlen(headerText) + 3; j++) {
+	for (int j = 0; j < SCREEN_WIDTH / 2; j++) {
 		feld[header_block.y + 4][j + header_block.x].farbe = header_block.farbe;
 	}
 
@@ -410,7 +410,7 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int *score) {
 		feld[block_2.y + 1][block_2.x + n + 1].symbol = quitText[n];
 	}
 	//Farbe setzen	(3 Zeilen)
-	for (int j = 0; j < strlen(quitText) + 2; j++) {	
+	for (int j = 0; j < strlen(quitText) + 2; j++) {
 		feld[block_2.y][j + block_2.x].farbe = block_2.farbe;
 	}
 	for (int j = 0; j < strlen(quitText) + 2; j++) {

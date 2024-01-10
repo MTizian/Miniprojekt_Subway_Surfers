@@ -4,9 +4,8 @@
 
 
 //Ausgabe größen
-#define SCREEN_HEIGHT			25	//Größe prinzipiell egal
-#define SCREEN_WIDTH			55	//muss in 3er schritten vergrößert werden und fängt bei 1 an und nicht bei 0
-
+#define SCREEN_HEIGHT			30	//Größe prinzipiell egal
+#define SCREEN_WIDTH			70	//minimum optimal 40
 
 //DYNAMISCHE GRÖßEN
 extern int step_size;
@@ -17,23 +16,10 @@ extern int line_2;
 extern int line_3;
 extern int line_4;
 
-
-
-
-
-
-
-
-
-
-
 //Spezielle Tasten
 #define PFEILTASTE_LINKS		75
 #define PFEILTASTE_RECHTS		77
 #define	ESC_KEY					'\x1B'
-
-
-
 
 //Menu Farben
 #define	PRIMARY_MENU_COLOR		gray
@@ -45,10 +31,5 @@ extern int line_4;
 #define LINE_COLOR				white
 #define	PLAYER_COLOR			red
 #define	TRAIN_COLOR				dark_gray
-
-
-
-
-
 
 #endif
