@@ -62,32 +62,32 @@ void printMap(position feld[5 * SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	printf("\x1b[0m");  // Setzt die Farben zurück
 }
 
-void setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position train, int len_x, int len_y, color farbe) {
+void setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *train) {
 	// Überprüfen Sie, ob der Zug im sichtbaren Bereich des Spielfelds liegt
-	if (train.y + len_y >= 0 && train.y < SCREEN_HEIGHT) {
+	if (train->y + train_len_y >= 0 && train->y < SCREEN_HEIGHT) {
 		// Zug nur setzen, wenn er sichtbar ist
-		for (int i = 0; i < len_y; i++) {
-			for (int j = 0; j < len_x; j++) {
+		for (int i = 0; i < train_len_y; i++) {
+			for (int j = 0; j < train_len_x; j++) {
 				// Überprüfung ob die Position im sichtbaren Bereich liegt
-				if (train.y + 1 + i >= 0 && train.y + 1 + i < SCREEN_HEIGHT && train.x + j >= 0 && train.x + j < SCREEN_WIDTH) {
-					feld[train.y + 1 + i][train.x + j].farbe = farbe;
+				if (train->y + 1 + i >= 0 && train->y + 1 + i < SCREEN_HEIGHT && train->x + j >= 0 && train->x + j < SCREEN_WIDTH) {
+					feld[train->y + 1 + i][train->x + j].farbe = TRAIN_COLOR;
 				}
 			}
 		}
 	}
 }
 
-void setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position player, color farbe) {
-	feld[player.y][player.x].farbe = farbe;
+void setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *player) {
+	feld[player->y][player->x].farbe = PLAYER_COLOR;
 
 	//Größerer Spieler (eig. ünnötig)
-	feld[player.y - 1][player.x + 1].farbe = farbe;
-	feld[player.y-1][player.x - 1].farbe = farbe;
-	feld[player.y-1][player.x].farbe = farbe;
+	feld[player->y - 1][player->x + 1].farbe = PLAYER_COLOR;
+	feld[player->y - 1][player->x - 1].farbe = PLAYER_COLOR;
+	feld[player->y - 1][player->x].farbe = PLAYER_COLOR;
 }
 
 int checkCollision(position *train_1, position *train_2, position *train_3, position *player) {
-	int collisionMap[5 * SCREEN_HEIGHT][SCREEN_WIDTH];
+	int collisionMap[5 * SCREEN_HEIGHT][SCREEN_WIDTH]; //Verbracuht viel PLatz
 
 	//Initalisierung der Collision Map auf 0
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
@@ -122,10 +122,8 @@ int randomNumber() {
 	return rand() % (randMax - randMin + 1) + randMin;
 }
 
-void printScoreboard(int score, int coins) {
-
-	printf(" Score:    %2d", score);
-	//printf(" | Coins:    %2d", coins);
+void printScoreboard(int *score) {
+	printf(" Score:    %2d", *score);
 	printf("\n");
 }
 
@@ -237,19 +235,19 @@ int mainGame() {
 	//Spielschleife
 	while (user_input != ESC_KEY) {
 		system("cls"); //Bildschirm leeren
-		printScoreboard(score, coins);//Score ausgeben
+		printScoreboard(&score);//Score ausgeben
 		setGameField(game_map);//farben setzen
 
 
 		//Züge PLatzieren auf der game map
 		//       Zielort   was		Länge x			Länge y			Farbe
-		setTrain(game_map, train_1, train_len_x, train_len_y, TRAIN_COLOR);
-		setTrain(game_map, train_2, train_len_x, train_len_y, TRAIN_COLOR);
-		setTrain(game_map, train_3, train_len_x, train_len_y, TRAIN_COLOR);
+		setTrain(game_map, &train_1);
+		setTrain(game_map, &train_2);
+		setTrain(game_map, &train_3);
 
 		//Spieler Platzieren
 		//		  Zielort	was		Farbe
-		setPlayer(game_map, player, black);
+		setPlayer(game_map, &player);
 
 
 		//Falls Kollision entdeckt gebe game over aus und warte 1s
@@ -327,7 +325,12 @@ void loadingAnimation() {
 	system("cls"); // Bildschirm leeren
 }
 
-void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int score) {
+void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int *score) {
+	const char	againText[] = "Again [y]";
+	const char	quitText[] = "Quit [n]";
+	const char	headerText[] = "Subway Surfers";
+	char		scoreText[30] = "Your Score ";
+
 	position block_1, block_2, header_block;
 	block_1.x = 7;
 	block_2.x = 33;
@@ -335,15 +338,12 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int score) {
 	block_1.farbe = block_2.farbe = header_block.farbe = SECONDARY_MENU_COLOR;
 	header_block.x = 7; header_block.y = 4;
 
-	const char	againText[] = "Again [y]";
-	const char	quitText[] = "Quit [n]";
-	const char	headerText[] = "Subway Surfers"; 
-	char		scoreText[30] = "Your Score ";
+	
 
 	//Ähnlich wie printf nur das die formatierte zeichenkette nicht ausgegeben wird sondern in einer anderen gespeichert wird
 	//Dabei wird der score an den bereits vorhandenen string drangesetzt
 	//	     Zielort	 größe des Array	format			  %d
-	sprintf_s(scoreText, sizeof(scoreText), "Your Score: %d", score);
+	sprintf_s(scoreText, sizeof(scoreText), "Your Score: %d", *score);
 	//anhängen von einer Zeichenkette in dem Fall ein Leerzeichen
 	strcat_s(scoreText, sizeof(scoreText), " ");
 
