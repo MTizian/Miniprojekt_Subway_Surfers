@@ -2,8 +2,8 @@
 //										//
 //		Subway Surfers Miniprojekt		//
 //										//
-//		Nico H�fele			311063		//
-//		Tizian M�ller		310315		//
+//		Nico Häfele			311063		//
+//		Tizian Müller		310315		//
 //										// 
 //		Das Programm ist Open Source	//
 //										//
@@ -16,8 +16,6 @@
 #include <conio.h>
 #include <stdio.h>
 #include <windows.h>
-#include <stdlib.h>
-#include <time.h>
 #include <stdbool.h>
 
 
@@ -34,7 +32,6 @@ int main() {
 	do {
 		//Spieler Eingabe
 		if (_kbhit()) { //Überprüft auf Tasten Eingabe 
-			fflush(stdin);
 			user_input = _getch();
 			switch (user_input) {
 				//wenn n oder ESC gedrückt

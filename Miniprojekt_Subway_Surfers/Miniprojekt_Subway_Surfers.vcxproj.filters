@@ -24,7 +24,7 @@
     <ClCompile Include="main.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="constrants.c">
+    <ClCompile Include="constants.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

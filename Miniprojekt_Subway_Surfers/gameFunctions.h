@@ -11,7 +11,7 @@ typedef struct {
 
 void	printPixel(color farbe);
 void	setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]);
-void	printMap(position coloredPixels[5 * SCREEN_HEIGHT][SCREEN_WIDTH]);
+void	printMap(position coloredPixels[SCREEN_HEIGHT][SCREEN_WIDTH]);
 void	setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *train);
 void	setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *player);
 int		checkCollision(position *train_1, position *train_2, position *train_3, position *player);

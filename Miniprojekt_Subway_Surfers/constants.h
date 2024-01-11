@@ -3,11 +3,11 @@
 
 
 
-//Ausgabe größen
-#define SCREEN_HEIGHT			30	//Größe prinzipiell egal
+//Ausgabe grï¿½ï¿½en
+#define SCREEN_HEIGHT			30	//Groese prinzipiell egal
 #define SCREEN_WIDTH			70	//minimum optimal 40
 
-//DYNAMISCHE GRÖßEN
+//DYNAMISCHE GRï¿½ï¿½EN
 extern int step_size;
 extern int train_len_x;
 extern int train_len_y;

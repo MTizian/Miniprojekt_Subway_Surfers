@@ -1,3 +1,7 @@
+#include "ColorPalette.h"
+#include "constants.h"
+#include "gameFunctions.h"
+
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,19 +9,16 @@
 #include <time.h>
 #include <windows.h>
 
-#include "ColorPalette.h"
-#include "constants.h"
-#include "gameFunctions.h"
 
 
 void printPixel(color farbe) {
 	//Farbige Ausgabe mit Ansi Escape Code
 	printf("\x1b[48;2;%d;%d;%dm\x1b[30m%c\x1b[0m", farbe.r, farbe.g, farbe.b, ' ');
-	printf("\x1b[0m");  // Setzt die Farben zurück
+	printf("\x1b[0m");  // Setzt die Farben zurï¿½ck
 }
 
 void setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
-	//Erstellung vom Spielfeld mit schwarzer fläche
+	//Erstellung vom Spielfeld mit schwarzer flï¿½che
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
 		for (int j = 0; j < SCREEN_WIDTH; j++){
 			feld[i][j].farbe = GAME_MAP_COLOR; //Spielfeldfarbe
@@ -48,7 +49,7 @@ void setGameField(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	}
 }
 
-void printMap(position feld[5 * SCREEN_HEIGHT][SCREEN_WIDTH]) {
+void printMap(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	for (int i = 0; i < SCREEN_HEIGHT; ++i) {
 		for (int j = 0; j < SCREEN_WIDTH; ++j) {
 			//Attribute mithilfe von Ansi Escape Code
@@ -59,16 +60,16 @@ void printMap(position feld[5 * SCREEN_HEIGHT][SCREEN_WIDTH]) {
 		}
 		printf("\n");
 	}
-	printf("\x1b[0m");  // Setzt die Farben zurück
+	printf("\x1b[0m");  // Setzt die Farben zurï¿½ck
 }
 
 void setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *train) {
-	// Überprüfen Sie, ob der Zug im sichtbaren Bereich des Spielfelds liegt
+	// ï¿½berprï¿½fen Sie, ob der Zug im sichtbaren Bereich des Spielfelds liegt
 	if (train->y + train_len_y >= 0 && train->y < SCREEN_HEIGHT) {
 		// Zug nur setzen, wenn er sichtbar ist
 		for (int i = 0; i < train_len_y; i++) {
 			for (int j = 0; j < train_len_x; j++) {
-				// Überprüfung ob die Position im sichtbaren Bereich liegt
+				// ï¿½berprï¿½fung ob die Position im sichtbaren Bereich liegt
 				if (train->y + 1 + i >= 0 && train->y + 1 + i < SCREEN_HEIGHT && train->x + j >= 0 && train->x + j < SCREEN_WIDTH) {
 					feld[train->y + 1 + i][train->x + j].farbe = TRAIN_COLOR;
 				}
@@ -80,14 +81,14 @@ void setTrain(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *train) {
 void setPlayer(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], position *player) {
 	feld[player->y][player->x].farbe = PLAYER_COLOR;
 
-	//Größerer Spieler (eig. ünnötig)
+	//Grï¿½ï¿½erer Spieler (eig. ï¿½nnï¿½tig)
 	feld[player->y - 1][player->x + 1].farbe = PLAYER_COLOR;
 	feld[player->y - 1][player->x - 1].farbe = PLAYER_COLOR;
 	feld[player->y - 1][player->x].farbe = PLAYER_COLOR;
 }
 
 int checkCollision(position *train_1, position *train_2, position *train_3, position *player) {
-	int collisionMap[5 * SCREEN_HEIGHT][SCREEN_WIDTH]; //Verbracuht viel PLatz
+	int collisionMap[SCREEN_HEIGHT][SCREEN_WIDTH]; //Verbracuht viel PLatz
 
 	//Initalisierung der Collision Map auf 0
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
@@ -96,7 +97,7 @@ int checkCollision(position *train_1, position *train_2, position *train_3, posi
 		}
 	}
 
-	//Setze positionen der Züge auf eins
+	//Setze positionen der Zï¿½ge auf eins
 	for (int i = 0; i < train_len_y; i++){
 		for (int j = 0; j < train_len_x; j++){
  			collisionMap[train_1->y + i][train_1->x + j] = 1;
@@ -105,7 +106,7 @@ int checkCollision(position *train_1, position *train_2, position *train_3, posi
 		}
 	}
 
-	//Wenn Kollision gebe eins zurück
+	//Wenn Kollision gebe eins zurï¿½ck
 	if (collisionMap[player->y][player->x] == 1) {
 		return 1; 
 	}
@@ -141,7 +142,7 @@ void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 	header_block.x = SCREEN_WIDTH / 4; header_block.y = 4;
 
 
-	//Erstellung vom Spielfeld mit Weißer fläche
+	//Erstellung vom Spielfeld mit Weiï¿½er flï¿½che
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
 		for (int j = 0; j < SCREEN_WIDTH; j++){
 			feld[i][j].farbe = PRIMARY_MENU_COLOR;
@@ -149,7 +150,7 @@ void setStartMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH]) {
 		}
 	}
 
-	//Header Block Überschrift
+	//Header Block ï¿½berschrift
 
 	//Text setzen
 	for (int n = 0; n < strlen(headerText); n++) {
@@ -220,12 +221,12 @@ int mainGame() {
 	train_3.x = 2 * (SCREEN_WIDTH / 3) + 3; // 39
 	position game_map[SCREEN_HEIGHT][SCREEN_WIDTH];
 	
-	//Wartezeit bis zur nächsten spielschleife
+	//Wartezeit bis zur nï¿½chsten spielschleife
 	int duration = 200;
 
 	initializeRandom();
 
-	//////////////// Vorübergehend
+	//////////////// Vorï¿½bergehend
 	train_1.y = randomNumber();
 	train_2.y = randomNumber();
 	train_3.y = randomNumber();
@@ -238,8 +239,8 @@ int mainGame() {
 		setGameField(game_map);//farben setzen
 
 
-		//Züge PLatzieren auf der game map
-		//       Zielort   was		Länge x			Länge y			Farbe
+		//Zï¿½ge PLatzieren auf der game map
+		//       Zielort   was		Lï¿½nge x			Lï¿½nge y			Farbe
 		setTrain(game_map, &train_1);
 		setTrain(game_map, &train_2);
 		setTrain(game_map, &train_3);
@@ -261,7 +262,7 @@ int mainGame() {
 		//Spieler Eingabe
 
 		if (_kbhit()) { //Falls tastenanschlag
-			//Übergebe char an user_input
+			//ï¿½bergebe char an user_input
 			user_input = _getch();
 			switch (user_input) {
 			case 'a': case PFEILTASTE_LINKS:
@@ -285,9 +286,9 @@ int mainGame() {
 		//Iterationen Counter
 		iterations++;
 		if (iterations == 10) {
-			//Für 10 Iterationen erhöht sich der score
+			//Fï¿½r 10 Iterationen erhï¿½ht sich der score
 			score++;
-			//Setze iterationen zurück
+			//Setze iterationen zurï¿½ck
 			iterations = 0;
 		}
 
@@ -315,7 +316,7 @@ void loadingAnimation() {
 
 	//Loading animation
 	printf("|");
-	//Schleife für das erstellen von farbigen Pixeln
+	//Schleife fï¿½r das erstellen von farbigen Pixeln
 	for (int i = 0; i < 15; i++) {
 		Sleep(50);
 		printPixel(LOADING_COLOR);
@@ -340,17 +341,17 @@ void setEndMenu(position feld[SCREEN_HEIGHT][SCREEN_WIDTH], int *score) {
 
 	
 
-	//Ähnlich wie printf nur das die formatierte zeichenkette nicht ausgegeben wird sondern in einer anderen gespeichert wird
+	//ï¿½hnlich wie printf nur das die formatierte zeichenkette nicht ausgegeben wird sondern in einer anderen gespeichert wird
 	//Dabei wird der score an den bereits vorhandenen string drangesetzt
-	//	     Zielort	 größe des Array	format			  %d
+	//	     Zielort	 grï¿½ï¿½e des Array	format			  %d
 	sprintf_s(scoreText, sizeof(scoreText), "Your Score: %d", *score);
-	//anhängen von einer Zeichenkette in dem Fall ein Leerzeichen
+	//anhï¿½ngen von einer Zeichenkette in dem Fall ein Leerzeichen
 	strcat_s(scoreText, sizeof(scoreText), " ");
 
 
 	system("cls");	//Bildschirmn leeren
 
-	//Erstellung vom Spielfeld mit Weißer fläche
+	//Erstellung vom Spielfeld mit Weiï¿½er flï¿½che
 	for (int i = 0; i < SCREEN_HEIGHT; i++){
 		for (int j = 0; j < SCREEN_WIDTH; j++){
 			feld[i][j].farbe = PRIMARY_MENU_COLOR;
